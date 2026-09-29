@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ENVAK — Gestión Ambiental Responsable | Soluciones Integrales de Residuos</title>
+  <meta name="description" content="ENVAK: Empresa Operadora de Residuos Sólidos (EO-RS) en Lima, Perú. Recolección, transporte, valorización y disposición final certificada. Solicita tu cotización rápida." />
+  
+  <!-- Favicon oficial ENVAK -->
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <meta name="theme-color" content="#14532B" />
+
+  <!-- Open Graph / Meta para compartir en WhatsApp, Facebook, LinkedIn -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="ENVAK — Gestión Ambiental Responsable" />
+  <meta property="og:description" content="Manejo integral de residuos sólidos industriales y comerciales. Empresa Operadora EO-RS autorizada. Cotiza en minutos." />
+  <meta property="og:image" content="assets/logo.png" />
+  <meta property="og:locale" content="es_PE" />
+
+  <!-- Google Fonts: Inter & Caveat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            envak: {
+              950: '#061D0D',
+              900: '#0A2E16',
+              800: '#0F4420',
+              forest: '#14532B',
+              dark: '#114725',
+              leaf: '#2E7D32',
+              accent: '#4ADE80',
+              lime: '#58CC02',
+              vibrant: '#43A047',
+              light: '#EAF5EC',
+              mint: '#EDF7EE',
+              border: '#D3EBD7',
+              pill: '#86EFAC',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            hand: ['Caveat', 'cursive'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- SweetAlert2 & Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    ::selection { background: #BBF7D0; color: #0A2E16; }
+    ::-webkit-scrollbar { width: 9px; }
+    ::-webkit-scrollbar-track { background: #F0FDF4; }
+    ::-webkit-scrollbar-thumb { background: #4ADE80; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #22C55E; }
+
+    /* Barra de progreso de lectura */
+    #readingProgress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3.5px;
+      background: linear-gradient(to right, #4ADE80, #22C55E, #14532B);
+      z-index: 100;
+      width: 0%;
+      transition: width 0.1s ease-out;
+    }
+
+    /* Animación flotante de insignia */
+    @keyframes badgeFloat {
+      0%, 100% { transform: rotate(-10deg) translateY(0px); }
+      50% { transform: rotate(-10deg) translateY(-10px); }
+    }
+    .badge-floating { animation: badgeFloat 4s ease-in-out infinite; }
+
+    /* Pulso animado para WhatsApp Flotante */
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 0; }
+      100% { transform: scale(0.95); opacity: 0; }
+    }
+    .pulse-ring::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 9999px;
+      background-color: #22C55E;
+      animation: pulseRing 2.2s infinite;
+      z-index: -1;
+    }
+
+    /* Patrón de puntos en hero */
+    .hero-pattern {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px);
+      background-size: 26px 26px;
+    }
+
+    /* Shimmer en botones */
+    .btn-shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shine::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.25), transparent);
+      transform: rotate(30deg);
+      transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .btn-shine:hover::after { left: 130%; }
+
+    /* Transición en tarjetas */
+    .service-card {
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 35px -10px rgba(20, 83, 43, 0.15);
+      border-color: #A7F3D0;
+    }
+
+    .benefit-item { transition: transform 0.3s ease; }
+    .benefit-item:hover { transform: translateX(6px); }
+
+    /* Foco de inputs */
+    .custom-input:focus {
+      border-color: #22C55E;
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.25);
+    }
+
+    /* Menú móvil */
+    .mobile-menu-wrapper {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mobile-menu-wrapper.is-open { max-height: 480px; }
+
+    /* Logos clientes */
+    .partner-logo { transition: all 0.3s ease; }
+    .partner-logo:hover { opacity: 1 !important; transform: scale(1.08); }
+
+    /* Acordeón FAQ */
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      opacity: 0;
+    }
+    .faq-item.is-active .faq-answer {
+      max-height: 280px;
+      opacity: 1;
+    }
+    .faq-item.is-active .faq-icon {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+
+<body class="font-sans text-gray-800 bg-white antialiased selection:bg-envak-light">
+
+  <!-- BARRA DE PROGRESO DE LECTURA -->
+  <div id="readingProgress"></div>
+
+  <!-- ========================================================= -->
+  <!-- 1. HEADER / NAVEGACIÓN                                   -->
+  <!-- ========================================================= -->
+  <header id="mainHeader" class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md transition-all duration-300 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+
+        <!-- LOGO OFICIAL ENVAK -->
+        <a href="#inicio" class="flex items-center shrink-0 group">
+          <img src="assets/logo.png" 
+               alt="ENVAK — Gestión Ambiental Responsable" 
+               class="h-11 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]" />
+        </a>
+
+        <!-- MENÚ CENTRAL (DESKTOP) -->
+        <nav class="hidden lg:flex items-center gap-7">
+          <a href="#inicio" class="text-sm font-semibold text-gray-700 hover:text-envak-forest transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-envak-forest after:transition-all hover:after:w-full">Inicio</a>
+          <a href="#nosotros" class="text-sm font-semibold text-gray-700 hover:text-envak-forest transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-envak-forest after:transition-all hover:after:w-full">Nosotros</a>
+          <a href="#servicios" class="text-sm font-semibold text-gray-700 hover:text-envak-forest transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-envak-forest after:transition-all hover:after:w-full">Servicios</a>
+          <a href="#cotizador" class="text-sm font-semibold text-gray-700 hover:text-envak-forest transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-envak-forest after:transition-all hover:after:w-full">Cotizador</a>
+          <a href="#compromiso" class="text-sm font-semibold text-gray-700 hover:text-envak-forest transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-envak-forest after:transition-all hover:after:w-full">Compromiso</a>
+          <a href="#faq" class="text-sm font-semibold text-gray-700 hover:text-envak-forest transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-envak-forest after:transition-all hover:after:w-full">Preguntas</a>
+          <a href="#contacto" class="text-sm font-semibold text-gray-700 hover:text-envak-forest transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-envak-forest after:transition-all hover:after:w-full">Contacto</a>
+        </nav>
+
+        <!-- CTA BOTÓN WHATSAPP (DESKTOP) -->
+        <div class="hidden lg:flex items-center">
+          <a href="https://wa.me/51904376366?text=Hola%20ENVAK,%20quiero%20solicitar%20un%20servicio%20de%20gesti%C3%B3n%20ambiental"
+             target="_blank" 
+             rel="noopener"
+             class="btn-shine inline-flex items-center gap-2.5 px-6 py-3 bg-envak-forest text-white font-bold text-sm rounded-full shadow-md shadow-envak-forest/20 hover:bg-envak-900 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
+            <span>Solicita tu servicio</span>
+            <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- BOTÓN HAMBURGUESA (MÓVIL) -->
+        <button id="menuToggleBtn" class="lg:hidden p-2 rounded-xl text-envak-forest hover:bg-envak-light transition-colors" aria-label="Abrir menú">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- MENÚ MÓVIL DESPLEGABLE -->
+    <div id="mobileMenu" class="mobile-menu-wrapper lg:hidden bg-white border-t border-gray-100 shadow-xl">
+      <div class="px-4 py-4 space-y-2">
+        <a href="#inicio" class="mobile-link block px-4 py-2.5 rounded-xl font-semibold text-gray-700 hover:bg-envak-light hover:text-envak-forest transition-colors">Inicio</a>
+        <a href="#nosotros" class="mobile-link block px-4 py-2.5 rounded-xl font-semibold text-gray-700 hover:bg-envak-light hover:text-envak-forest transition-colors">Nosotros</a>
+        <a href="#servicios" class="mobile-link block px-4 py-2.5 rounded-xl font-semibold text-gray-700 hover:bg-envak-light hover:text-envak-forest transition-colors">Servicios</a>
+        <a href="#cotizador" class="mobile-link block px-4 py-2.5 rounded-xl font-semibold text-gray-700 hover:bg-envak-light hover:text-envak-forest transition-colors">Cotizador Rápido</a>
+        <a href="#compromiso" class="mobile-link block px-4 py-2.5 rounded-xl font-semibold text-gray-700 hover:bg-envak-light hover:text-envak-forest transition-colors">Compromiso Ambiental</a>
+        <a href="#faq" class="mobile-link block px-4 py-2.5 rounded-xl font-semibold text-gray-700 hover:bg-envak-light hover:text-envak-forest transition-colors">Preguntas Frecuentes</a>
+        <a href="#contacto" class="mobile-link block px-4 py-2.5 rounded-xl font-semibold text-gray-700 hover:bg-envak-light hover:text-envak-forest transition-colors">Contacto</a>
+        <div class="pt-2">
+          <a href="https://wa.me/51904376366?text=Hola%20ENVAK,%20quiero%20solicitar%20un%20servicio"
+             target="_blank"
+             class="flex items-center justify-center gap-2 w-full py-3.5 bg-envak-forest text-white font-bold rounded-xl shadow-md">
+            <span>Solicita tu servicio</span>
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ========================================================= -->
+  <!-- 2. HERO SECTION (REPRODUCCIÓN EXACTA DEL MOCKUP 1)        -->
+  <!-- ========================================================= -->
+  <section id="inicio" class="relative pt-20 overflow-hidden bg-envak-forest">
+    <div class="relative bg-gradient-to-br from-envak-950 via-envak-forest to-envak-800 hero-pattern min-h-[580px] lg:min-h-[640px] flex items-center">
+      
+      <!-- Fondo decorativo -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-envak-accent/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 right-1/4 w-[450px] h-[450px] bg-emerald-400/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 w-full">
+        <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+          <!-- COLUMNA IZQUIERDA: CONTENIDO PRINCIPAL -->
+          <div class="lg:col-span-7 text-left">
+            
+            <div class="flex items-center gap-2 mb-4">
+              <span class="inline-block bg-envak-950/80 border border-emerald-500/30 text-white font-bold text-xs uppercase px-3 py-1 rounded-md tracking-wider">
+                ENVAK
+              </span>
+              <span class="text-white/80 text-xs font-semibold uppercase tracking-widest">
+                Solicita nuestro servicio
+              </span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-black text-white leading-[1.08] tracking-tight mb-4">
+              ¡Estamos listos<br />
+              <span class="text-envak-accent">para ayudarte!</span>
+            </h1>
+
+            <p class="text-white/85 text-base sm:text-lg max-w-xl mb-8 leading-relaxed font-normal">
+              Completa el formulario y uno de nuestros asesores se pondrá en contacto contigo para brindarte una solución a la medida de tu empresa.
+            </p>
+
+            <!-- CTA BOTÓN SOLICITAR COTIZACIÓN -->
+            <div class="mb-10">
+              <a href="#contacto" 
+                 class="btn-shine inline-flex items-center gap-3 bg-white text-envak-forest font-extrabold text-base px-8 py-4 rounded-full shadow-2xl hover:bg-envak-light hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group">
+                <span class="w-10 h-10 bg-envak-forest rounded-full flex items-center justify-center text-white shrink-0 group-hover:bg-envak-900 transition-colors">
+                  <i data-lucide="message-square" class="w-5 h-5"></i>
+                </span>
+                <span>Solicitar cotización</span>
+                <i data-lucide="arrow-right" class="w-5 h-5 text-envak-forest group-hover:translate-x-1.5 transition-transform"></i>
+              </a>
+            </div>
+
+            <!-- 3 BADGES HORIZONTALES -->
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
+              <div class="flex items-center gap-2.5 bg-white/10 backdrop-blur-md border border-white/15 text-white px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-medium">
+                <div class="w-7 h-7 rounded-full bg-emerald-400/20 flex items-center justify-center shrink-0">
+                  <i data-lucide="headset" class="w-4 h-4 text-envak-accent"></i>
+                </div>
+                <span>Atención personalizada</span>
+              </div>
+
+              <div class="flex items-center gap-2.5 bg-white/10 backdrop-blur-md border border-white/15 text-white px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-medium">
+                <div class="w-7 h-7 rounded-full bg-emerald-400/20 flex items-center justify-center shrink-0">
+                  <i data-lucide="zap" class="w-4 h-4 text-envak-accent"></i>
+                </div>
+                <span>Respuesta rápida</span>
+              </div>
+
+              <div class="flex items-center gap-2.5 bg-white/10 backdrop-blur-md border border-white/15 text-white px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-medium">
+                <div class="w-7 h-7 rounded-full bg-emerald-400/20 flex items-center justify-center shrink-0">
+                  <i data-lucide="shield-check" class="w-4 h-4 text-envak-accent"></i>
+                </div>
+                <span>Compromiso ambiental</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- COLUMNA DERECHA: FOTO DEL OPERARIO + INSIGNIA FLOTANTE -->
+          <div class="lg:col-span-5 relative flex justify-center lg:justify-end mt-4 lg:mt-0">
+            <div class="relative w-full max-w-md lg:max-w-none rounded-3xl overflow-hidden shadow-2xl border-2 border-white/20 group">
+              <img src="assets/hero-worker-hq.jpg" 
+                   alt="Operario y Camión de Gestión Ambiental ENVAK" 
+                   class="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-envak-950/60 via-transparent to-transparent pointer-events-none"></div>
+            </div>
+
+            <!-- Insignia flotante -->
+            <div class="absolute -top-6 -right-2 sm:-top-8 sm:right-4 z-20 badge-floating pointer-events-none">
+              <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl px-5 py-3.5 border border-emerald-100 text-center max-w-[190px]">
+                <p class="font-hand text-envak-forest text-xl sm:text-2xl font-bold leading-tight">
+                  Juntos por un planeta más limpio
+                </p>
+                <div class="flex justify-center mt-1">
+                  <img src="assets/icon.png" alt="ENVAK leaf" class="w-6 h-6 object-contain" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Curva divisora -->
+      <div class="absolute bottom-0 left-0 right-0 pointer-events-none">
+        <svg viewBox="0 0 1440 45" fill="none" class="w-full h-auto" preserveAspectRatio="none">
+          <path d="M0 45H1440V25C1080 45 360 45 0 25V45Z" fill="#F8FAFC"/>
+        </svg>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- BARRA DE CUMPLIMIENTO & NORMATIVA (EO-RS / MINAM)         -->
+  <!-- ========================================================= -->
+  <section class="bg-slate-50 py-6 border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        
+        <div class="flex items-center justify-center gap-3 p-2">
+          <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-envak-forest shrink-0">
+            <i data-lucide="badge-check" class="w-5 h-5"></i>
+          </div>
+          <div class="text-left">
+            <p class="text-xs font-bold text-gray-900 uppercase">Registro EO-RS</p>
+            <p class="text-[11px] text-gray-500">Autorización MINAM vigente</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center gap-3 p-2">
+          <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-envak-forest shrink-0">
+            <i data-lucide="file-check-2" class="w-5 h-5"></i>
+          </div>
+          <div class="text-left">
+            <p class="text-xs font-bold text-gray-900 uppercase">Certificados Oficiales</p>
+            <p class="text-[11px] text-gray-500">Válidos para OEFA y DIGESA</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center gap-3 p-2">
+          <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-envak-forest shrink-0">
+            <i data-lucide="truck" class="w-5 h-5"></i>
+          </div>
+          <div class="text-left">
+            <p class="text-xs font-bold text-gray-900 uppercase">Flota Autorizada</p>
+            <p class="text-[11px] text-gray-500">Transporte seguro y monitoreado</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center gap-3 p-2">
+          <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-envak-forest shrink-0">
+            <i data-lucide="recycle" class="w-5 h-5"></i>
+          </div>
+          <div class="text-left">
+            <p class="text-xs font-bold text-gray-900 uppercase">Economía Circular</p>
+            <p class="text-[11px] text-gray-500">Valorización y reaprovechamiento</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- 3. SECCIÓN BENEFICIOS + FORMULARIO (SPLIT LAYOUT)         -->
+  <!-- ========================================================= -->
+  <section id="nosotros" class="py-12 sm:py-16 lg:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+        <!-- COLUMNA IZQUIERDA: BENEFICIOS -->
+        <div class="lg:col-span-5 bg-envak-mint rounded-3xl p-6 sm:p-8 lg:p-10 border border-envak-border">
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-envak-forest tracking-tight mb-8">
+            ¿Por qué elegir ENVAK?
+          </h2>
+
+          <div class="space-y-6">
+            
+            <div class="benefit-item flex items-start gap-4">
+              <div class="w-13 h-13 sm:w-14 sm:h-14 bg-envak-forest text-white rounded-full flex items-center justify-center shrink-0 shadow-md shadow-envak-forest/20">
+                <i data-lucide="leaf" class="w-6 h-6 sm:w-7 sm:h-7 text-envak-accent"></i>
+              </div>
+              <div>
+                <h3 class="font-extrabold text-gray-900 text-base sm:text-lg mb-1 leading-snug">
+                  Gestión integral de residuos
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                  Nos encargamos de todo el proceso, desde la recolección hasta la disposición final.
+                </p>
+              </div>
+            </div>
+
+            <div class="benefit-item flex items-start gap-4">
+              <div class="w-13 h-13 sm:w-14 sm:h-14 bg-envak-forest text-white rounded-full flex items-center justify-center shrink-0 shadow-md shadow-envak-forest/20">
+                <i data-lucide="shield-check" class="w-6 h-6 sm:w-7 sm:h-7 text-envak-accent"></i>
+              </div>
+              <div>
+                <h3 class="font-extrabold text-gray-900 text-base sm:text-lg mb-1 leading-snug">
+                  Cumplimiento normativo
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                  Trabajamos bajo la normativa ambiental vigente.
+                </p>
+              </div>
+            </div>
+
+            <div class="benefit-item flex items-start gap-4">
+              <div class="w-13 h-13 sm:w-14 sm:h-14 bg-envak-forest text-white rounded-full flex items-center justify-center shrink-0 shadow-md shadow-envak-forest/20">
+                <i data-lucide="recycle" class="w-6 h-6 sm:w-7 sm:h-7 text-envak-accent"></i>
+              </div>
+              <div>
+                <h3 class="font-extrabold text-gray-900 text-base sm:text-lg mb-1 leading-snug">
+                  Valorización y reciclaje
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                  Aprovechamos los residuos para darles una segunda vida.
+                </p>
+              </div>
+            </div>
+
+            <div class="benefit-item flex items-start gap-4">
+              <div class="w-13 h-13 sm:w-14 sm:h-14 bg-envak-forest text-white rounded-full flex items-center justify-center shrink-0 shadow-md shadow-envak-forest/20">
+                <i data-lucide="users" class="w-6 h-6 sm:w-7 sm:h-7 text-envak-accent"></i>
+              </div>
+              <div>
+                <h3 class="font-extrabold text-gray-900 text-base sm:text-lg mb-1 leading-snug">
+                  Experiencia y confianza
+                </h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                  Contamos con un equipo especializado y tecnología de vanguardia.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="mt-10 pt-6 border-t border-envak-border flex items-center gap-3">
+            <img src="assets/icon.png" alt="ENVAK" class="w-9 h-9 object-contain shrink-0" />
+            <span class="font-hand text-envak-forest text-2xl sm:text-3xl font-bold -rotate-2">
+              Tu aliado en la gestión de residuos
+            </span>
+          </div>
+
+        </div>
+
+        <!-- COLUMNA DERECHA: FORMULARIO -->
+        <div id="contacto" class="lg:col-span-7">
+          <div class="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-xl shadow-gray-200/50 border border-gray-100">
+            
+            <div class="mb-6">
+              <h2 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+                Completa el formulario
+              </h2>
+              <p class="text-gray-500 text-sm sm:text-base font-medium mt-1">
+                y cuéntanos qué necesitas
+              </p>
+            </div>
+
+            <form id="envakQuoteForm" novalidate class="space-y-4">
+
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+                    Nombre de la empresa <span class="text-emerald-600">*</span>
+                  </label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                      <i data-lucide="building-2" class="w-4 h-4"></i>
+                    </div>
+                    <input type="text" 
+                           name="empresa" 
+                           required 
+                           placeholder="Ej. Empresa S.A.C." 
+                           class="custom-input w-full pl-10 pr-4 py-3 bg-gray-50/70 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+                    Nombre completo <span class="text-emerald-600">*</span>
+                  </label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                      <i data-lucide="user" class="w-4 h-4"></i>
+                    </div>
+                    <input type="text" 
+                           name="nombre" 
+                           required 
+                           placeholder="Ej. Juan Pérez" 
+                           class="custom-input w-full pl-10 pr-4 py-3 bg-gray-50/70 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+                    Correo electrónico <span class="text-emerald-600">*</span>
+                  </label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                      <i data-lucide="mail" class="w-4 h-4"></i>
+                    </div>
+                    <input type="email" 
+                           name="correo" 
+                           required 
+                           placeholder="ejemplo@empresa.com" 
+                           class="custom-input w-full pl-10 pr-4 py-3 bg-gray-50/70 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+                    Teléfono de contacto <span class="text-emerald-600">*</span>
+                  </label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                      <i data-lucide="phone" class="w-4 h-4"></i>
+                    </div>
+                    <input type="tel" 
+                           name="telefono" 
+                           required 
+                           placeholder="Ej. 904 376 366" 
+                           class="custom-input w-full pl-10 pr-4 py-3 bg-gray-50/70 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+                  Tipo de residuo <span class="text-emerald-600">*</span>
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                    <i data-lucide="recycle" class="w-4 h-4"></i>
+                  </div>
+                  <select name="residuo" 
+                          required 
+                          class="custom-input w-full pl-10 pr-10 py-3 bg-gray-50/70 border border-gray-200 rounded-xl text-sm text-gray-900 appearance-none outline-none transition-all cursor-pointer">
+                    <option value="" disabled selected>Selecciona una opción</option>
+                    <option value="Residuos Sólidos Industriales">Residuos Sólidos Industriales</option>
+                    <option value="Residuos Peligrosos">Residuos Peligrosos</option>
+                    <option value="Residuos No Peligrosos / Comunes">Residuos No Peligrosos / Comunes</option>
+                    <option value="Residuos Biocontaminados y Hospitalarios">Residuos Biocontaminados y Hospitalarios</option>
+                    <option value="Aparatos Eléctricos y Electrónicos (RAEE)">Aparatos Eléctricos y Electrónicos (RAEE)</option>
+                    <option value="Residuos Orgánicos y Valorizables">Residuos Orgánicos y Valorizables</option>
+                    <option value="Residuos de Construcción y Demolición">Residuos de Construcción y Demolición</option>
+                    <option value="Asesoría y Gestión Integral Continua">Asesoría y Gestión Integral Continua</option>
+                  </select>
+                  <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-gray-400">
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Mensaje / Requerimiento adicional
+                  </label>
+                  <span id="charCountLabel" class="text-xs text-gray-400 font-mono">0/500</span>
+                </div>
+                <div class="relative">
+                  <div class="absolute top-3.5 left-3.5 pointer-events-none text-gray-400">
+                    <i data-lucide="message-square" class="w-4 h-4"></i>
+                  </div>
+                  <textarea name="mensaje" 
+                            id="mensajeInput"
+                            maxlength="500" 
+                            rows="3" 
+                            placeholder="Cuéntanos más sobre lo que necesitas..." 
+                            class="custom-input w-full pl-10 pr-4 py-3 bg-gray-50/70 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 resize-none outline-none transition-all"></textarea>
+                </div>
+              </div>
+
+              <!-- CHECKBOX POLÍTICA CON MODAL FUNCIONAL -->
+              <div class="pt-1">
+                <label class="flex items-start gap-3 cursor-pointer group">
+                  <input type="checkbox" 
+                         name="privacidad" 
+                         required 
+                         class="mt-1 w-4 h-4 rounded border-gray-300 text-envak-forest focus:ring-emerald-500 accent-envak-forest cursor-pointer" />
+                  <span class="text-xs sm:text-sm text-gray-600 leading-normal select-none">
+                    Acepto la <button type="button" id="openPrivacyModalBtn" class="text-envak-forest font-semibold underline hover:text-emerald-700">política de privacidad</button> de ENVAK.
+                  </span>
+                </label>
+              </div>
+
+              <div class="pt-2">
+                <button type="submit" 
+                        class="btn-shine w-full flex items-center justify-center gap-2.5 bg-envak-forest text-white font-bold text-base py-4 rounded-xl shadow-lg shadow-envak-forest/20 hover:bg-envak-900 hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-300">
+                  <i data-lucide="send" class="w-5 h-5 text-envak-accent"></i>
+                  <span>Enviar solicitud</span>
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- 4. CATÁLOGO INTERACTIVO DE SERVICIOS                      -->
+  <!-- ========================================================= -->
+  <section id="servicios" class="py-16 bg-slate-50 border-y border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="inline-block text-xs font-bold uppercase tracking-widest text-emerald-700 bg-emerald-100 px-3.5 py-1.5 rounded-full mb-3">
+          Nuestras Soluciones
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+          Servicios Especializados de Gestión Ambiental
+        </h2>
+        <p class="text-gray-600 text-sm sm:text-base mt-3">
+          Atendemos empresas comerciales, industriales, de salud y construcción con trazabilidad garantizada.
+        </p>
+      </div>
+
+      <!-- GRID DE 4 SERVICIOS -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Card 1 -->
+        <div class="service-card bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-envak-forest flex items-center justify-center mb-5 border border-emerald-100">
+              <i data-lucide="truck" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-extrabold text-gray-900 text-lg mb-2">Recolección & Transporte</h3>
+            <p class="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4">
+              Flota moderna y acondicionada para el retiro seguro de residuos peligrosos y comunes con manifiesto de carga oficial.
+            </p>
+          </div>
+          <a href="https://wa.me/51904376366?text=Hola%20ENVAK,%20deseo%20cotizar%20Recolecci%C3%B3n%20y%20Transporte" target="_blank"
+             class="inline-flex items-center gap-1.5 text-xs font-bold text-envak-forest hover:text-emerald-600 transition-colors pt-3 border-t border-gray-100">
+            <span>Cotizar este servicio</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="service-card bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-envak-forest flex items-center justify-center mb-5 border border-emerald-100">
+              <i data-lucide="land-plot" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-extrabold text-gray-900 text-lg mb-2">Disposición Final</h3>
+            <p class="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4">
+              Disposición controlada en rellenos de seguridad y sanitarios autorizados por MINAM, con certificado de confinamiento.
+            </p>
+          </div>
+          <a href="https://wa.me/51904376366?text=Hola%20ENVAK,%20deseo%20cotizar%20Disposici%C3%B3n%20Final" target="_blank"
+             class="inline-flex items-center gap-1.5 text-xs font-bold text-envak-forest hover:text-emerald-600 transition-colors pt-3 border-t border-gray-100">
+            <span>Cotizar este servicio</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="service-card bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-envak-forest flex items-center justify-center mb-5 border border-emerald-100">
+              <i data-lucide="recycle" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-extrabold text-gray-900 text-lg mb-2">Valorización y Reciclaje</h3>
+            <p class="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4">
+              Aseguramos la segregación, procesamiento y reinserción de materiales plásticos, metales, cartón, madera y RAEE.
+            </p>
+          </div>
+          <a href="https://wa.me/51904376366?text=Hola%20ENVAK,%20deseo%20cotizar%20Valorizaci%C3%B3n%20y%20Reciclaje" target="_blank"
+             class="inline-flex items-center gap-1.5 text-xs font-bold text-envak-forest hover:text-emerald-600 transition-colors pt-3 border-t border-gray-100">
+            <span>Cotizar este servicio</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="service-card bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-envak-forest flex items-center justify-center mb-5 border border-emerald-100">
+              <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-extrabold text-gray-900 text-lg mb-2">Asesoría & Cumplimiento</h3>
+            <p class="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4">
+              Elaboración del Plan de Manejo de Residuos, Declaración Anual en SIGERSOL y soporte técnico para auditorías OEFA.
+            </p>
+          </div>
+          <a href="https://wa.me/51904376366?text=Hola%20ENVAK,%20deseo%20cotizar%20Asesor%C3%ADa%20Ambiental" target="_blank"
+             class="inline-flex items-center gap-1.5 text-xs font-bold text-envak-forest hover:text-emerald-600 transition-colors pt-3 border-t border-gray-100">
+            <span>Cotizar este servicio</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- 5. COTIZADOR INTERACTIVO RÁPIDO (ESTIMADOR)               -->
+  <!-- ========================================================= -->
+  <section id="cotizador" class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="bg-gradient-to-br from-emerald-50 via-white to-envak-mint rounded-3xl p-6 sm:p-10 border border-emerald-200 shadow-xl">
+        
+        <div class="text-center mb-8">
+          <div class="w-12 h-12 bg-envak-forest text-white rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md">
+            <i data-lucide="calculator" class="w-6 h-6 text-envak-accent"></i>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-gray-900">
+            Estimador Rápido de Servicio
+          </h2>
+          <p class="text-gray-600 text-sm mt-1">
+            Selecciona los parámetros de tu empresa y recibe una recomendación a la medida.
+          </p>
+        </div>
+
+        <div class="grid sm:grid-cols-3 gap-4 mb-6">
+          
+          <!-- Paso 1 -->
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">1. Sector de Empresa</label>
+            <select id="calcSector" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="Industrial / Manufactura">Industrial / Fábricas</option>
+              <option value="Comercial / Oficinas">Comercial / Tiendas / Retail</option>
+              <option value="Clínica / Salud">Clínicas / Laboratorios</option>
+              <option value="Construcción / Obra">Construcción / Obras</option>
+              <option value="Almacén / Logística">Logística / Almacenes</option>
+            </select>
+          </div>
+
+          <!-- Paso 2 -->
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">2. Volumen Estimado</label>
+            <select id="calcVolumen" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="Menos de 1 Tonelada">Menor a 1 Tonelada</option>
+              <option value="1 a 5 Toneladas">1 a 5 Toneladas</option>
+              <option value="5 a 15 Toneladas">5 a 15 Toneladas</option>
+              <option value="Más de 15 Toneladas">Gran Generador (+15 Ton)</option>
+            </select>
+          </div>
+
+          <!-- Paso 3 -->
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-2">3. Frecuencia Deseada</label>
+            <select id="calcFrecuencia" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm font-medium outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="Servicio Único / Puntual">Servicio Único / Desalojo</option>
+              <option value="Recojo Quincenal">Quincenal</option>
+              <option value="Recojo Mensual">Mensual Programado</option>
+              <option value="Contrato Anual Permanente">Contrato Anual Permanente</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Resultado Dinámico -->
+        <div class="bg-white p-5 rounded-2xl border border-emerald-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+          <div>
+            <p class="text-xs font-bold text-emerald-800 uppercase tracking-wide">Solución recomendada ENVAK:</p>
+            <p id="calcResultado" class="text-sm font-semibold text-gray-800 mt-0.5">
+              Plan Integral para Sector Industrial con frecuencia mensual y emisión de manifiestos EO-RS.
+            </p>
+          </div>
+          <button id="calcWhatsappBtn" 
+                  class="btn-shine inline-flex items-center justify-center gap-2 px-6 py-3 bg-envak-forest text-white font-bold text-xs sm:text-sm rounded-xl shrink-0 hover:bg-envak-900 transition-all shadow-md">
+            <span>Cotizar esta configuración</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- 6. SECCIÓN DE CONFIANZA / SOCIAL PROOF (MOCKUP 2)         -->
+  <!-- ========================================================= -->
+  <section id="compromiso" class="py-10 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="bg-gradient-to-r from-envak-950 via-envak-forest to-envak-900 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
+        
+        <div class="grid lg:grid-cols-12 gap-8 items-center">
+
+          <div class="lg:col-span-7">
+            <div class="flex items-center gap-3.5 mb-3">
+              <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shrink-0 shadow-md">
+                <img src="assets/icon.png" alt="ENVAK leaf" class="w-6 h-6 object-contain" />
+              </div>
+              <div>
+                <p class="text-emerald-300 text-xs sm:text-sm font-semibold tracking-wide uppercase">
+                  Empresas que ya confían en nosotros
+                </p>
+                <h3 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+                  Juntos por un futuro más sostenible
+                </h3>
+              </div>
+            </div>
+
+            <!-- LOGOS CLIENTES -->
+            <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4 pt-2">
+              <span class="partner-logo text-white/50 text-xl sm:text-2xl font-bold tracking-wider hover:text-white cursor-default select-none">àlicorp</span>
+              <span class="partner-logo text-white/50 text-xl sm:text-2xl font-bold tracking-wider italic hover:text-white cursor-default select-none">Baccus</span>
+              <span class="partner-logo text-white/50 text-xl sm:text-2xl font-bold tracking-wider hover:text-white cursor-default select-none" style="font-family: Georgia, serif;">Coca-Cola</span>
+              <span class="partner-logo text-white/50 text-xl sm:text-2xl font-bold tracking-wider hover:text-white cursor-default select-none">Nestlé</span>
+              <span class="partner-logo text-white/50 text-lg sm:text-xl font-black tracking-widest uppercase hover:text-white cursor-default select-none">UNACEM</span>
+              <span class="partner-logo text-white/50 text-xl sm:text-2xl font-bold tracking-wider uppercase hover:text-white cursor-default select-none">RANSA</span>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 flex justify-center lg:justify-end">
+            <div class="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl border border-white/20 group">
+              <img src="assets/envak-truck-hq.jpg" 
+                   alt="Camión recolector de residuos ENVAK" 
+                   class="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105" />
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- 7. PREGUNTAS FRECUENTES (FAQ ACORDEÓN INTERACTIVO)        -->
+  <!-- ========================================================= -->
+  <section id="faq" class="py-16 bg-slate-50 border-t border-gray-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-10">
+        <span class="text-xs font-bold uppercase tracking-widest text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
+          Dudas Frecuentes
+        </span>
+        <h2 class="text-3xl font-extrabold text-gray-900 mt-3">
+          Todo lo que necesitas saber antes de contratar
+        </h2>
+      </div>
+
+      <div class="space-y-3.5">
+        
+        <!-- FAQ 1 -->
+        <div class="faq-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden is-active">
+          <button type="button" class="faq-toggle w-full px-6 py-4.5 flex items-center justify-between text-left gap-4 font-bold text-gray-900 text-sm sm:text-base hover:text-envak-forest transition-colors">
+            <span>¿ENVAK cuenta con registro oficial como Empresa Operadora (EO-RS)?</span>
+            <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-gray-400 shrink-0 transition-transform"></i>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-gray-600 text-xs sm:text-sm leading-relaxed border-t border-gray-50 pt-2">
+            Sí. ENVAK cuenta con el Registro Autoritativo vigente ante el Ministerio del Ambiente (MINAM) como Empresa Operadora de Residuos Sólidos (EO-RS), lo que certifica que todo el transporte y tratamiento se realiza conforme al D.L. N° 1278 y su reglamento.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <button type="button" class="faq-toggle w-full px-6 py-4.5 flex items-center justify-between text-left gap-4 font-bold text-gray-900 text-sm sm:text-base hover:text-envak-forest transition-colors">
+            <span>¿Emiten manifiestos y certificados válidos para OEFA y DIGESA?</span>
+            <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-gray-400 shrink-0 transition-transform"></i>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-gray-600 text-xs sm:text-sm leading-relaxed border-t border-gray-50 pt-2">
+            Absolutamente. Por cada servicio de recolección y disposición final emitimos el Manifiesto de Manejo de Residuos Sólidos Peligrosos y los Certificados de Destrucción o Disposición Final en rellenos autorizados, totalmente válidos para fiscalizaciones de OEFA, municipalidades y auditorías de certificación ISO 14001.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <button type="button" class="faq-toggle w-full px-6 py-4.5 flex items-center justify-between text-left gap-4 font-bold text-gray-900 text-sm sm:text-base hover:text-envak-forest transition-colors">
+            <span>¿Qué tipos de residuos pueden gestionar?</span>
+            <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-gray-400 shrink-0 transition-transform"></i>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-gray-600 text-xs sm:text-sm leading-relaxed border-t border-gray-50 pt-2">
+            Gestionamos residuos no peligrosos (asimilables a comunes, cartón, plástico, madera, metales), residuos peligrosos industriales (lodos, aceites, envases contaminados, solventes), residuos hospitalarios/biocontaminados, residuos RAEE (electrónicos) y residuos de construcción.
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <button type="button" class="faq-toggle w-full px-6 py-4.5 flex items-center justify-between text-left gap-4 font-bold text-gray-900 text-sm sm:text-base hover:text-envak-forest transition-colors">
+            <span>¿Cuál es el tiempo de respuesta para una cotización?</span>
+            <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-gray-400 shrink-0 transition-transform"></i>
+          </button>
+          <div class="faq-answer px-6 pb-5 text-gray-600 text-xs sm:text-sm leading-relaxed border-t border-gray-50 pt-2">
+            Nuestro equipo comercial responde solicitudes estándar en menos de 2 horas en horario laboral vía WhatsApp (+51 904 376 366). Para proyectos industriales de mayor escala realizamos visitas técnicas en 24 a 48 horas.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- 8. BANNER CTA INTERMEDIO (UN PEQUEÑO GESTO — MOCKUP 1)     -->
+  <!-- ========================================================= -->
+  <section class="py-8 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="bg-gradient-to-r from-envak-forest via-emerald-800 to-envak-900 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        <div class="flex items-center gap-4 text-left">
+          <div class="w-14 h-14 bg-white/15 rounded-full flex items-center justify-center shrink-0 border border-white/20">
+            <img src="assets/icon.png" alt="ENVAK" class="w-8 h-8 object-contain" />
+          </div>
+          <div>
+            <h3 class="text-lg sm:text-xl md:text-2xl font-black text-white leading-tight">
+              Un pequeño gesto hace una gran diferencia
+            </h3>
+            <p class="text-white/80 text-xs sm:text-sm mt-1 max-w-lg font-normal">
+              Con tu solicitud, contribuyes a una gestión de residuos más responsable y sostenible.
+            </p>
+          </div>
+        </div>
+
+        <div class="hidden lg:flex items-center justify-center shrink-0">
+          <img src="assets/sprout-plant-hq.jpg" 
+               alt="Planta naciendo en tierra fértil" 
+               class="h-20 w-auto rounded-xl object-contain opacity-90" />
+        </div>
+
+        <div class="shrink-0 w-full sm:w-auto">
+          <a href="https://wa.me/51904376366?text=Hola%20ENVAK,%20quiero%20m%C3%A1s%20informaci%C3%B3n"
+             target="_blank"
+             class="btn-shine flex items-center justify-center gap-2.5 px-8 py-3.5 bg-envak-pill text-envak-950 font-extrabold text-sm rounded-full shadow-lg hover:bg-emerald-300 hover:scale-105 active:scale-95 transition-all">
+            <span>Contáctanos</span>
+            <svg class="w-5 h-5 text-envak-950" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- 9. BANNER DE CTA FINAL Y DATOS DE CONTACTO (MOCKUP 2)     -->
+  <!-- ========================================================= -->
+  <section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="bg-gray-50/80 rounded-3xl p-6 sm:p-8 lg:p-12 border border-gray-200">
+        
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 pb-8 border-b border-gray-200">
+          
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-envak-mint rounded-2xl flex items-center justify-center shrink-0 border border-envak-border">
+              <img src="assets/icon.png" alt="ENVAK" class="w-7 h-7 object-contain" />
+            </div>
+            <div>
+              <p class="text-xs font-bold text-emerald-700 uppercase tracking-widest">
+                ¿Listo para un cambio real?
+              </p>
+              <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mt-1">
+                Contáctanos ahora
+              </h3>
+              <p class="text-gray-600 text-sm mt-1 max-w-lg">
+                Nuestro equipo está listo para atenderte y brindarte la mejor solución para tu empresa.
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <a href="https://wa.me/51904376366?text=Hola%20ENVAK,%20estoy%20listo%20para%20un%20cambio%20real%20en%20gesti%C3%B3n%20ambiental"
+               target="_blank"
+               class="btn-shine inline-flex items-center gap-3 px-8 py-4 bg-envak-forest text-white font-bold text-base rounded-full shadow-lg shadow-envak-forest/20 hover:bg-envak-900 hover:shadow-xl transition-all duration-300">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              <span>Escríbenos por WhatsApp</span>
+              <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </a>
+          </div>
+
+        </div>
+
+        <div class="pt-6 flex flex-wrap items-center justify-center sm:justify-start gap-6 sm:gap-10 text-sm font-medium text-gray-700">
+          
+          <a href="https://wa.me/51904376366" target="_blank" class="flex items-center gap-2 hover:text-envak-forest transition-colors">
+            <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-envak-forest">
+              <i data-lucide="phone" class="w-4 h-4"></i>
+            </div>
+            <span>+51 904 376 366</span>
+          </a>
+
+          <a href="mailto:contacto@envak.com" class="flex items-center gap-2 hover:text-envak-forest transition-colors">
+            <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-envak-forest">
+              <i data-lucide="mail" class="w-4 h-4"></i>
+            </div>
+            <span>contacto@envak.com</span>
+          </a>
+
+          <div class="flex items-center gap-2 text-gray-700">
+            <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-envak-forest">
+              <i data-lucide="map-pin" class="w-4 h-4"></i>
+            </div>
+            <span>Lima, Perú</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- 10. FOOTER CORPORATIVO                                    -->
+  <!-- ========================================================= -->
+  <footer class="bg-envak-950 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      
+      <div class="grid md:grid-cols-12 gap-8 items-center">
+        
+        <div class="md:col-span-4 flex justify-center md:justify-start">
+          <img src="assets/logo-white.png" 
+               alt="ENVAK Gestión Ambiental Responsable" 
+               class="h-11 sm:h-12 w-auto object-contain" />
+        </div>
+
+        <div class="md:col-span-5 flex flex-wrap items-center justify-center gap-6 text-sm text-white/70 font-medium">
+          <a href="#inicio" class="hover:text-white transition-colors">Inicio</a>
+          <a href="#nosotros" class="hover:text-white transition-colors">Nosotros</a>
+          <a href="#servicios" class="hover:text-white transition-colors">Servicios</a>
+          <a href="#cotizador" class="hover:text-white transition-colors">Cotizador</a>
+          <a href="#compromiso" class="hover:text-white transition-colors">Compromiso</a>
+          <a href="#faq" class="hover:text-white transition-colors">Preguntas</a>
+          <a href="#contacto" class="hover:text-white transition-colors">Contacto</a>
+        </div>
+
+        <div class="md:col-span-3 flex items-center justify-center md:justify-end gap-3">
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 hover:bg-emerald-500 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="Facebook">
+            <i data-lucide="facebook" class="w-4 h-4"></i>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 hover:bg-emerald-500 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="Instagram">
+            <i data-lucide="instagram" class="w-4 h-4"></i>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 hover:bg-emerald-500 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="LinkedIn">
+            <i data-lucide="linkedin" class="w-4 h-4"></i>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-white/10 hover:bg-emerald-500 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="YouTube">
+            <i data-lucide="youtube" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+        <p>© 2025 ENVAK S.A.C. Todos los derechos reservados. RUC 20600000000.</p>
+        <div class="flex items-center gap-1.5 text-emerald-400 font-medium">
+          <span>Gestión ambiental responsable, hoy y siempre.</span>
+          <img src="assets/icon.png" alt="Leaf" class="w-4 h-4 object-contain inline-block" />
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- ========================================================= -->
+  <!-- WIDGET FLOTANTE PERMANENTE DE WHATSAPP CON PULSO          -->
+  <!-- ========================================================= -->
+  <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+    
+    <!-- Globo de texto emergente -->
+    <div id="waTooltip" class="hidden sm:flex items-center bg-white px-4 py-2.5 rounded-2xl shadow-xl border border-gray-100 text-xs font-semibold text-gray-800 animate-bounce">
+      <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping mr-2"></span>
+      ¿Dudas con tu gestión de residuos? ¡Chatea aquí!
+    </div>
+
+    <!-- Botón verde pulsante -->
+    <a href="https://wa.me/51904376366?text=Hola%20ENVAK,%20vengo%20desde%20su%20web%20y%20necesito%20asesor%C3%ADa%20r%C3%A1pida"
+       target="_blank"
+       rel="noopener"
+       aria-label="Contactar por WhatsApp"
+       class="relative pulse-ring w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300">
+      <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </a>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- MODAL DE POLÍTICA DE PRIVACIDAD                           -->
+  <!-- ========================================================= -->
+  <div id="privacyModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-scale-up">
+      <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <img src="assets/icon.png" alt="ENVAK" class="w-7 h-7 object-contain" />
+          <h3 class="font-extrabold text-gray-900 text-lg">Política de Privacidad — ENVAK S.A.C.</h3>
+        </div>
+        <button type="button" id="closePrivacyModalBtn" class="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto text-xs sm:text-sm text-gray-600 space-y-4 leading-relaxed">
+        <p>En cumplimiento de la <b>Ley N° 29733 (Ley de Protección de Datos Personales de la República del Perú)</b>, ENVAK S.A.C. informa a sus usuarios y clientes sobre el tratamiento de sus datos personales:</p>
+        <h4 class="font-bold text-gray-800">1. Finalidad del tratamiento</h4>
+        <p>Los datos solicitados a través del formulario de cotización (empresa, nombre, correo electrónico, teléfono y tipo de residuo) son recopilados con la única finalidad de responder solicitudes comerciales, brindar asesoría ambiental y elaborar presupuestos personalizados.</p>
+        <h4 class="font-bold text-gray-800">2. Confidencialidad y Seguridad</h4>
+        <p>ENVAK S.A.C. no vende, transfiere ni cede bajo ninguna circunstancia información a terceros con fines publicitarios. Sus datos se resguardan bajo estrictas medidas de seguridad técnica y legal.</p>
+        <h4 class="font-bold text-gray-800">3. Ejercicio de Derechos ARCO</h4>
+        <p>Usted puede ejercer en cualquier momento sus derechos de Acceso, Rectificación, Cancelación y Oposición enviando un correo a <a href="mailto:contacto@envak.com" class="text-emerald-700 font-bold underline">contacto@envak.com</a>.</p>
+      </div>
+      <div class="p-4 bg-gray-50 border-t border-gray-100 flex justify-end">
+        <button type="button" id="acceptPrivacyModalBtn" class="px-6 py-2.5 bg-envak-forest text-white font-bold text-xs sm:text-sm rounded-xl hover:bg-envak-900">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- SCRIPTS & INTERACCIÓN DINÁMICA                            -->
+  <!-- ========================================================= -->
+  <script>
+    lucide.createIcons();
+
+    // 1. Barra de progreso de lectura
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('readingProgress').style.width = scrolled + '%';
+    });
+
+    // 2. Manejo del Menú Móvil
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let isMenuOpen = false;
+
+    menuToggleBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      mobileMenu.classList.toggle('is-open', isMenuOpen);
+    });
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        isMenuOpen = false;
+        mobileMenu.classList.remove('is-open');
+      });
+    });
+
+    // 3. Sombra en header
+    const headerEl = document.getElementById('mainHeader');
+    window.addEventListener('scroll', () => {
+      headerEl.classList.toggle('shadow-md', window.scrollY > 15);
+    });
+
+    // 4. Contador de caracteres en vivo
+    const mensajeInput = document.getElementById('mensajeInput');
+    const charCountLabel = document.getElementById('charCountLabel');
+    if (mensajeInput && charCountLabel) {
+      mensajeInput.addEventListener('input', () => {
+        const len = mensajeInput.value.length;
+        charCountLabel.textContent = `${len}/500`;
+        charCountLabel.classList.toggle('text-amber-500', len >= 480);
+      });
+    }
+
+    // 5. Acordeón de FAQ
+    document.querySelectorAll('.faq-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isActive = item.classList.contains('is-active');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('is-active'));
+        if (!isActive) item.classList.add('is-active');
+      });
+    });
+
+    // 6. Estimador / Calculadora interactiva
+    const calcSector = document.getElementById('calcSector');
+    const calcVolumen = document.getElementById('calcVolumen');
+    const calcFrecuencia = document.getElementById('calcFrecuencia');
+    const calcResultado = document.getElementById('calcResultado');
+    const calcWhatsappBtn = document.getElementById('calcWhatsappBtn');
+
+    function actualizarCalculadora() {
+      const s = calcSector.value;
+      const v = calcVolumen.value;
+      const f = calcFrecuencia.value;
+
+      calcResultado.innerHTML = `Plan sugerido para <b>${s}</b> con carga estimada de <b>${v}</b> (${f}). Incluye transporte autorizado y certificación EO-RS.`;
+    }
+
+    [calcSector, calcVolumen, calcFrecuencia].forEach(select => {
+      select.addEventListener('change', actualizarCalculadora);
+    });
+
+    calcWhatsappBtn.addEventListener('click', () => {
+      const s = calcSector.value;
+      const v = calcVolumen.value;
+      const f = calcFrecuencia.value;
+      const msg = encodeURIComponent(
+        `¡Hola ENVAK! Utilicé su estimador web y requiero cotizar:\n\n` +
+        `• *Sector:* ${s}\n` +
+        `• *Volumen estimado:* ${v}\n` +
+        `• *Frecuencia requerida:* ${f}\n\n` +
+        `¿Podrían indicarme los pasos para una cotización formal?`
+      );
+      window.open(`https://wa.me/51904376366?text=${msg}`, '_blank');
+    });
+
+    // 7. Modal de Política de Privacidad
+    const privacyModal = document.getElementById('privacyModal');
+    const openPrivacyModalBtn = document.getElementById('openPrivacyModalBtn');
+    const closePrivacyModalBtn = document.getElementById('closePrivacyModalBtn');
+    const acceptPrivacyModalBtn = document.getElementById('acceptPrivacyModalBtn');
+
+    if (openPrivacyModalBtn) {
+      openPrivacyModalBtn.addEventListener('click', () => privacyModal.classList.remove('hidden'));
+    }
+    [closePrivacyModalBtn, acceptPrivacyModalBtn].forEach(b => {
+      if (b) b.addEventListener('click', () => privacyModal.classList.add('hidden'));
+    });
+    window.addEventListener('click', (e) => {
+      if (e.target === privacyModal) privacyModal.classList.add('hidden');
+    });
+
+    // 8. Procesamiento del Formulario con SweetAlert2 y Confetti
+    const quoteForm = document.getElementById('envakQuoteForm');
+    quoteForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const empresa = quoteForm.empresa.value.trim();
+      const nombre = quoteForm.nombre.value.trim();
+      const correo = quoteForm.correo.value.trim();
+      const telefono = quoteForm.telefono.value.trim();
+      const residuo = quoteForm.residuo.value;
+      const mensaje = quoteForm.mensaje.value.trim();
+      const privacidad = quoteForm.privacidad.checked;
+
+      if (!empresa || !nombre || !correo || !telefono || !residuo) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campos incompletos',
+          text: 'Por favor completa todos los campos marcados con asterisco (*).',
+          confirmButtonColor: '#14532B',
+        });
+        return;
+      }
+
+      if (!privacidad) {
+        Swal.fire({
+          icon: 'info',
+          title: 'Política de privacidad',
+          text: 'Debes aceptar la política de privacidad para enviar tu solicitud.',
+          confirmButtonColor: '#14532B',
+        });
+        return;
+      }
+
+      confetti({
+        particleCount: 85,
+        spread: 75,
+        origin: { y: 0.6 },
+        colors: ['#4ADE80', '#14532B', '#22C55E', '#86EFAC']
+      });
+
+      const textoWhatsApp = encodeURIComponent(
+        `¡Hola ENVAK! Vengo desde su página web.\n\n` +
+        `*Empresa:* ${empresa}\n` +
+        `*Contacto:* ${nombre}\n` +
+        `*Correo:* ${correo}\n` +
+        `*Teléfono:* ${telefono}\n` +
+        `*Tipo de residuo:* ${residuo}\n` +
+        (mensaje ? `*Detalle:* ${mensaje}\n` : '')
+      );
+
+      Swal.fire({
+        title: '¡Solicitud Recibida!',
+        html: `
+          <p class="text-gray-600 mb-4">
+            Gracias <b>${nombre}</b>. Hemos registrado los datos de <b>${empresa}</b>.
+            Uno de nuestros asesores ambientales te contactará a la brevedad.
+          </p>
+          <div class="p-3 bg-emerald-50 rounded-xl text-emerald-800 text-sm mb-2">
+            ¿Deseas enviar el requerimiento directamente por WhatsApp para atención inmediata?
+          </div>
+        `,
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonText: 'Abrir WhatsApp ahora',
+        cancelButtonText: 'Cerrar',
+        confirmButtonColor: '#14532B',
+        cancelButtonColor: '#6B7280',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.open(`https://wa.me/51904376366?text=${textoWhatsApp}`, '_blank');
+        }
+        quoteForm.reset();
+        if (charCountLabel) charCountLabel.textContent = '0/500';
+      });
+
+    });
+  </script>
+
+</body>
+</html>
